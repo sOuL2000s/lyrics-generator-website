@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Song Lyrics Generator</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Generate Your Song Lyrics</h1>
+        <form id="lyricsForm">
+            <label for="theme">Choose a Theme:</label>
+            <select id="theme" name="theme">
+                <option value="love">Love</option>
+                <option value="sad">Sad</option>
+                <option value="happy">Happy</option>
+            </select>
+            <button type="submit">Generate Lyrics</button>
+        </form>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        document.getElementById('lyricsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const theme = document.getElementById('theme').value;
+
+            const response = await fetch('/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({ theme })
+            });
+
+            const data = await response.json();
+            document.getElementById('output').innerText = data.lyrics;
+        });
+    </script>
+</body>
+</html>
